@@ -1,8 +1,8 @@
-import { useState} from 'react';
-import { Form, Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import FormContainer from '../component/FormContainer';
-import CheckoutSteps from '../component/CheckoutSteps';
+    import { useState} from 'react';
+    import { Form, Button } from 'react-bootstrap';
+    import { useDispatch, useSelector } from 'react-redux';
+    import FormContainer from '../component/FormContainer';
+    import CheckoutSteps from '../component/CheckoutSteps';
 import { saveShippingAddress } from '../actions/cartActions';
 
 const ShippingScreen = ({ history }) => {
