@@ -1,6 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux';
-import Message from '../component/Message';
-import Loader from '../component/Loader';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
@@ -36,15 +34,30 @@ const Header = () => {
                   <LinkContainer to='/profile'>
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>
-                  <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    Logout
+                  </NavDropdown.Item>
                 </NavDropdown>
-              ): (
-              <LinkContainer to='/login'>
-                <Nav.Link >
-                  <FaUser /> Sign In
-                </Nav.Link>
-              </LinkContainer>
-                
+              ) : (
+                <LinkContainer to='/login'>
+                  <Nav.Link>
+                    <FaUser /> Sign In
+                  </Nav.Link>
+                </LinkContainer>
+              )}
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title='Admin' id='admin-menu'>
+                  <LinkContainer to='/admin/userlist'>
+                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to='/admin/productlist'>
+                    <NavDropdown.Item>Products</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to='/admin/orderlist'>
+                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  </LinkContainer>
+
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>
