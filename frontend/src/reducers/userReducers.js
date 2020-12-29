@@ -21,12 +21,10 @@ import {
   USER_DELETE_REQUEST,
   USER_DELETE_SUCCESS,
   USER_DELETE_FAIL,
-  USER_GET_REQUEST,
-  USER_GET_SUCCESS,
-  USER_GET_FAIL,
   USER_EDIT_REQUEST,
   USER_EDIT_SUCCESS,
   USER_EDIT_FAIL,
+  USER_EDIT_RESET,
 } from '../constants/userConstant';
 
 export const userLoginReducer = (state = {}, action) => {
@@ -38,7 +36,7 @@ export const userLoginReducer = (state = {}, action) => {
     case USER_LOGIN_FAIL:
       return { loading: false, error: action.payload };
     case USER_LOGOUT:
-      return {};
+      return { };
     default:
       return state;
   }
@@ -115,7 +113,7 @@ export const userDeleteReducer = (state = {}, action) => {
   }
 };
 
-export const userEditReducer = (state = {  }, action) => {
+export const userEditReducer = (state = { user: {} }, action) => {
   switch (action.type) {
     case USER_EDIT_REQUEST:
       return {  loading: true };
@@ -123,6 +121,8 @@ export const userEditReducer = (state = {  }, action) => {
       return { loading: false, success: true};
     case USER_EDIT_FAIL:
       return { loading: false, error: action.payload };
+    case USER_EDIT_RESET:
+      return { user: {}}
     default:
       return state;
   }
