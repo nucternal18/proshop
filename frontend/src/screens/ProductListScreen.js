@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Button, Col, Table, Row } from 'react-bootstrap';
+import { Button, Col, Table, Row, Image } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../component/Message';
 import Loader from '../component/Loader';
+import Paginate from '../component/Paginate';
 import {
   listProducts,
   deleteProduct,
@@ -11,14 +12,15 @@ import {
 } from '../actions/productActions';
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
 
-const ProductListScreen = ({ history }) => {
+const ProductListScreen = ({ history, match }) => {
+  const pageNumber = match.params.pageNumber || 1
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   const productsList = useSelector((state) => state.productsList);
-  const { loading, error, products } = productsList;
+  const { loading, error, products, pages, page } = productsList;
   const productDelete = useSelector((state) => state.productDelete);
   const { loading: loadingDelete, error: errorDelete, success } = productDelete;
 
@@ -42,9 +44,9 @@ const ProductListScreen = ({ history }) => {
     if (successCreate) {
       history.push(`/admin/product/${product._id}/edit`);
     } else {
-      dispatch(listProducts());
+      dispatch(listProducts('', pageNumber));
     }
-  }, [history, userInfo, dispatch, successCreate, product]);
+  }, [history, userInfo, dispatch, successCreate, product, success, pageNumber]);
 
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure?')) {
@@ -76,22 +78,28 @@ const ProductListScreen = ({ history }) => {
           <Loader />
         ) : error ? (
           <Message variant='danger'>{error}</Message>
-        ) : (
+          ) : (
+              <>
           <Table striped bordered hover responsive className='table-sm'>
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Image</th>
                 <th>NAME</th>
                 <th>PRICE</th>
                 <th>CATEGORY</th>
                 <th>BRAND</th>
                 <th>Count In Stock</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {products.map((item) => (
                 <tr key={item._id}>
                   <td>{item._id}</td>
+                  <td>
+                      <Image src={item.image} alt={item.name} width='50' thumbnail fluid rounded />
+                  </td>
                   <td>{item.name}</td>
                   <td>£{item.price}</td>
                   <td>{item.category}</td>
@@ -113,7 +121,9 @@ const ProductListScreen = ({ history }) => {
                 </tr>
               ))}
             </tbody>
-          </Table>
+                </Table>
+                <Paginate pages={pages} page={page} isAdmin={true}/>
+                </>
         )}
       </Col>
     </>

@@ -25,7 +25,6 @@ const UserEditScreen = ({ history, location, match }) => {
 
   const dispatch = useDispatch();
 
-  const redirect = location.search ? location.search.split('=')[1] : '/';
 
   useEffect(() => {
     if (successEdit) {

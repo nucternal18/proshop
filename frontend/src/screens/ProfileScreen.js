@@ -6,6 +6,7 @@ import Message from '../component/Message';
 import Loader from '../component/Loader';
 import { getUserDetails, updateUserProfile, listUsers } from '../actions/userActions';
 import { myOrderList } from '../actions/orderActions';
+import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstant';
 
 const ProfileScreen = ({ history }) => {
   const [name, setName] = useState('');
@@ -31,7 +32,10 @@ const ProfileScreen = ({ history }) => {
     if (!userInfo) {
       history.push('/login');
     } else {
-      if (!user.name) {
+      if (!user || !user.name || success) {
+        dispatch({
+          type: USER_UPDATE_PROFILE_RESET,
+        });
         dispatch(getUserDetails('profile'))
         dispatch(myOrderList())
         dispatch(listUsers())
@@ -40,7 +44,7 @@ const ProfileScreen = ({ history }) => {
         setEmail(user.email);
       }
     }
-  }, [history, userInfo, dispatch, user]);
+  }, [history, userInfo, dispatch, user, success]);
 
   const submitHandler = (e) => {
     e.preventDefault();
